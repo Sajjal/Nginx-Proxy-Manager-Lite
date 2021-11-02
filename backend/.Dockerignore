@@ -1,0 +1,7 @@
+.DS_Store
+.vs_code
+tests
+venv
+__pycache__
+.pytest_cache
+unit_test.py

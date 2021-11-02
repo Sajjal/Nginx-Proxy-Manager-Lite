@@ -1,0 +1,53 @@
+[{
+        "table_name": "domain_info",
+        "fields": [
+            { "name": "id", "type": "char", "length": "50", "null": 0 },
+            { "name": "timestamp", "type": "char", "length": "20", "null": 0 },
+            { "name": "userID", "type": "char", "length": "50", "null": 0 },
+            { "name": "domain", "type": "char", "length": "100", "null": 0 },
+            { "name": "type", "type": "char", "length": "15", "null": 0 },
+            { "name": "is_disabled", "type": "int", "length": "1", "null": 1 },
+            { "name": "ips", "type": "char", "length": "300", "null": 1 },
+            { "name": "static_path", "type": "char", "length": "100", "null": 1 },
+            { "name": "redirect_url", "type": "char", "length": "100", "null": 1 },
+            { "name": "enableSSL", "type": "int", "length": "1", "null": 1 },
+            { "name": "forceSSL", "type": "int", "length": "1", "null": 1 },
+            { "name": "websocket", "type": "int", "length": "1", "null": 1 },
+            { "name": "HSTS", "type": "int", "length": "1", "null": 1 },
+            { "name": "http2", "type": "int", "length": "1", "null": 1 },
+            { "name": "block_exploit", "type": "int", "length": "1", "null": 1 }
+        ],
+        "config": {
+            "primary_key": "id",
+            "foreign_key": { "field": "userID", "reference_table": "users", "reference_table_field": "id" }
+        }
+    },
+    {
+        "table_name": "ssl_info",
+        "fields": [
+            { "name": "id", "type": "char", "length": "50", "null": 0 },
+            { "name": "timestamp", "type": "char", "length": "20", "null": 0 },
+            { "name": "userID", "type": "char", "length": "50", "null": 0 },
+            { "name": "domain", "type": "char", "length": "100", "null": 0 },
+            { "name": "ssl_cert_path", "type": "char", "length": "100", "null": 1 },
+            { "name": "ssl_key_path", "type": "char", "length": "100", "null": 1 }
+        ],
+        "config": {
+            "primary_key": "id",
+            "foreign_key": { "field": "userID", "reference_table": "users", "reference_table_field": "id" }
+        }
+    },
+    {
+        "table_name": "users",
+        "fields": [
+            { "name": "id", "type": "char", "length": "50", "null": 0 },
+            { "name": "timestamp", "type": "char", "length": "20", "null": 0 },
+            { "name": "email", "type": "char", "length": "50", "null": 0 },
+            { "name": "password", "type": "char", "length": "100", "null": 0 },
+            { "name": "first_login", "type": "char", "length": "1", "null": 0 }
+        ],
+        "config": {
+            "primary_key": "id"
+        }
+    }
+]

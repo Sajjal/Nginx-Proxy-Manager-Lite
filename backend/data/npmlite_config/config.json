@@ -1,0 +1,8 @@
+{
+    "enable_web_portal": true,
+    "jwt_secret_key": "n5sxXf8GUHV2tSSkM4JF3QVUL7AbXqxUXrpdpjGM4d9YDySNkJ",
+    "JWT_COOKIE_SECURE": false,
+
+    "enable_rest_api": false,
+    "api_key": "npmlitebysajjal"
+}
