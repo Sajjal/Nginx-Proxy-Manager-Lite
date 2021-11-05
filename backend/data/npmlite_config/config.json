@@ -1,6 +1,6 @@
 {
     "enable_web_portal": true,
-    "jwt_secret_key": "n5sxXf8GUHV2tSSkM4JF3QVUL7AbXqxUXrpdpjGM4d9YDySNkJ",
+    "jwt_secret_key": "super_secret_key",
     "JWT_COOKIE_SECURE": false,
 
     "enable_rest_api": false,

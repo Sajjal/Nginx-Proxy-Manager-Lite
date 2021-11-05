@@ -27,7 +27,7 @@ class RouteController:
 
     @staticmethod
     def __validate_user_input(user_input):
-        allowed_characters = re.compile(r"[A-Za-z0-9-_.@/]+")
+        allowed_characters = re.compile(r"[A-Za-z0-9-_.@/]+|^$")
         domain_regex = re.compile(r"^(\*\.)?([a-z\d][a-z\d-]*[a-z\d]\.)+[a-z]+$")
 
         if not isinstance(user_input, dict):

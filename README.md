@@ -53,17 +53,17 @@ It is the lite version of original **Nginx Proxy Manager** and only contains bas
 
 ## Configuration
 
-- You can choose to either enable or disable `Web Interface` and `Rest API`. To do so:
+- You can choose to either enable or disable `Web Interface` and `Rest API`
+- If you followed above `docker run command`, edit: `~/npmlite/data/npmlite_config/config.json`
+- If you mapped different directory, find and edit `/data/npmlite_config/config.json`
 
-  - If you followed above `docker run command`, edit: `~/npmlite/data/npmlite_config/config.json`
-  - If you mapped different directory, find and edit `/data/npmlite_config/config.json`
-
-- Configuration option:
-  - **enable_web_portal** : (bool) Enable or disable **web interface**. Default is `true`
-  - **jwt_secret_key** : (string) Secret to protect **JWT token** with. Only for web interface
-  - **JWT_COOKIE_SECURE** : (bool) Enable or disable **HTTPS only JWT cookies**. Default is `false`
-  - **enable_rest_api** : (bool) Enable or disable **REST API**. Default is `false`
-  - **api_key** : (string) API Key for REST API endpoints. Only if REST API is enabled
+  | Configuration option | Type     | Description                                                                    |
+  | :------------------- | :------- | :----------------------------------------------------------------------------- |
+  | `enable_web_portal`  | `bool`   | Enable or disable web portal. Default is `true`                                |
+  | `jwt_secret_key`     | `string` | Secret to protect **JWT token** with. **Required** if web interface is enabled |
+  | `JWT_COOKIE_SECURE`  | `bool`   | Enable or disable **HTTPS only JWT cookies**. Default is `false`               |
+  | `enable_rest_api`    | `bool`   | Enable or disable **REST API**. Default is `false`                             |
+  | `api_key`            | `string` | API Key for REST API endpoints. **Required** if REST API is enabled            |
 
 > **Info**: It is recommended to change `jwt_secret_key` and **restart** the container after making configuration changes.
 
@@ -76,6 +76,7 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 ### Check API Status:
 
 - Check if the API server is running
+- **Endpoint:** `GET /api/status`
 
   ```
   curl http://your_machine_ip/api/status
@@ -90,6 +91,7 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 ### List Hosts:
 
 - List all availabel Hosts
+- **Endpoint:** `GET /api/list`
 
   ```
   curl http://your-machine-ip/api/list -H "Authorization: Bearer <api_key>"
@@ -128,11 +130,13 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 
 ### Request SSL from Let's Encrypt:
 
-- Required parameters: `domain`, `email`, `agree_le_tos`
+- **Endpoint:** `POST /api/requestSSL`
 
-  - **domain** : (string) Domain you want to request SSL certificate for
-  - **email** : (string) Email address to setup an account with Let's Encrypt
-  - **agree_le_tos**: (bool) Accept or deny Let's Encrypt's terms of services
+  | Parameter      | Type     | Description                                                        |
+  | :------------- | :------- | :----------------------------------------------------------------- |
+  | `domain`       | `string` | **Required**. Domain you want to request SSL certificate for       |
+  | `email`        | `string` | **Required**. Email address to setup an account with Let's Encrypt |
+  | `agree_le_tos` | `bool`   | **Required**. Accept or deny Let's Encrypt's terms of services     |
 
   ```
   curl -X POST http://your-machine-ip/api/requestSSL
@@ -155,6 +159,7 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 ### List SSL Certificates:
 
 - List all available SSL certificates
+- **Endpoint:** `GET /api/listSSL`
 
   ```
   curl http://your-machine-ip/api/listSSL -H "Authorization: Bearer <api_key>"
@@ -184,27 +189,29 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 
 ### Add New Host
 
-- Required Params: `domain` and `type`. All params:
+- **Endpoint:** `POST /api/create`
 
-  - **domain**: (string) Domain name that you want to add
-  - **type**: (string) `static`, `redirect` or `reverse_proxy`
-  - **static_path**: (string) Location of static files if `type` is `static`
-  - **redirect_url**: (string) URL to redirect if `type` is `redirect`
-  - **ips**: (array/list of objects) ip/hostname and/or port to forward if `type` is `reverse_proxy`
-
-    - E.g: `[ { "ip": "localhost", "port": "40045" }, { "ip": "192.168.1.2"} ]`
-
-  - **block_exploit**: (bool) Enable to block common exploits
-  - **websocket**: (bool) Enable to support websocket, useful for socket.io based applications
+  | Parameter       | Type                    | Description                                                                       |
+  | :-------------- | :---------------------- | :-------------------------------------------------------------------------------- |
+  | `domain`        | `string`                | **Required**. Domain name that you want to add                                    |
+  | `type`          | `string`                | **Required**. `static`, `redirect` or `reverse_proxy`                             |
+  | `static_path`   | `string`                | Location of static files. **Required** if `type` is `static`                      |
+  | `redirect_url`  | `string`                | URL to redirect. **Required** if `type` is `redirect`                             |
+  | `ips`           | `array/list of objects` | IP/Hostname and/or port to forward. **Required** if `type` is `reverse_proxy`     |
+  |                 |                         | **EXample**: `[ { "ip": "localhost", "port": "40045" }, { "ip": "192.168.1.2"} ]` |
+  | `block_exploit` | `bool`                  | Enable to block common exploits                                                   |
+  | `websocket`     | `bool`                  | Enable to support websocket, useful for socket.io based applications              |
 
 - If you have obtained a SSL certificate and want to enable it, include the following params:
 
-  - **enableSSL**: (bool) Enable to listen for `https`
-  - **forceSSL**: (bool) Enable to force `http` requests to `https`
-  - **http2**: (bool) Enable to support `http2`
-  - **HSTS**: (bool) Enable for strict transport security
-  - **ssl_cert_path**: (string) absolute path to the `ssl certificate` file
-  - **ssl_key_path**: (string) absolute path to the `ssl key` file
+  | Parameter       | Type     | Description                                                                        |
+  | :-------------- | :------- | :--------------------------------------------------------------------------------- |
+  | `enableSSL`     | `bool`   | Enable to listen for `https`                                                       |
+  | `forceSSL`      | `bool`   | Enable to force redirect `http` requests to `https`                                |
+  | `http2`         | `bool`   | Enable to support `http2`                                                          |
+  | `HSTS`          | `bool`   | Enable for strict transport security                                               |
+  | `ssl_cert_path` | `string` | Absolute path to the `ssl certificate` file. **Required** if `enableSSL` is `true` |
+  | `ssl_key_path`  | `string` | Absolute path to the `ssl key` file. **Required** if `enableSSL` is `true`         |
 
   ```
   curl -X POST http://your-machine-ip/api/create
@@ -221,7 +228,8 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 
 ### Update Host
 
-- Params are similar as of **Add New Host**
+- Params are similar as of [**Add New Host**](#add-new-host)
+- **Endpoint:** `POST /api/update`
 
   ```
   curl -X POST http://your-machine-ip/api/update
@@ -239,7 +247,11 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 ### Disable Host
 
 - Temporarily disable a HOST while preserving all of its configuration
-- Param: **domain** : (string) The domain that you want to disable
+- **Endpoint:** `POST /api/disable`
+
+  | Parameter | Type     | Description                                       |
+  | :-------- | :------- | :------------------------------------------------ |
+  | `domain`  | `string` | **Required**. The domain that you want to disable |
 
   ```
   curl -X POST http://your-machine-ip/api/disable
@@ -257,7 +269,11 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 ### Enable Host
 
 - To enable previously disabled a HOST
-- Param: **domain** : (string) The domain that you want to enable
+- **Endpoint:** `POST /api/enable`
+
+  | Parameter | Type     | Description                                      |
+  | :-------- | :------- | :----------------------------------------------- |
+  | `domain`  | `string` | **Required**. The domain that you want to enable |
 
   ```
   curl -X POST http://your-machine-ip/api/enable
@@ -274,7 +290,11 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 
 ### Delete Host
 
-- Param: **domain** : (string) The domain that you want to delete
+- **Endpoint:** `POST /api/delete`
+
+  | Parameter | Type     | Description                                      |
+  | :-------- | :------- | :----------------------------------------------- |
+  | `domain`  | `string` | **Required**. The domain that you want to delete |
 
   ```
   curl -X POST http://your-machine-ip/api/delete
