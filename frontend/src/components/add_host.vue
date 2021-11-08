@@ -7,8 +7,10 @@
     <q-scroll-area dark :thumb-style="thumbStyle" class="text-white" :style="isPC ? 'height: 55vh' : 'height:42vh;'">
       <div class="q-pt-md text-white">
         <q-radio dark v-model="type" val="static" label="Static" />
-        <q-radio dark v-model="type" val="reverse_proxy" label="Reverse Proxy" color="secondary" class="q-pl-md" />
-        <q-radio dark v-model="type" val="redirect" label="Redirect 301" color="purple" class="q-pl-md" />
+        <br v-if="!isPC" />
+        <q-radio dark v-model="type" val="reverse_proxy" label="Reverse Proxy" color="secondary" :class="isPC ? 'q-pl-md' : ''" />
+        <br v-if="!isPC" />
+        <q-radio dark v-model="type" val="redirect" label="Redirect 301" color="purple" :class="isPC ? 'q-pl-md' : ''" />
       </div>
       <q-input v-if="type == 'static'" dark dense outlined v-model="static_path" label="Static Path /" class="q-mt-md" />
       <q-input v-if="type == 'redirect'" dark dense outlined v-model="redirect_url" label="Redirect Url" class="q-mt-md" />
