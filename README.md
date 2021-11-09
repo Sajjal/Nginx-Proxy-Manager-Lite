@@ -103,7 +103,7 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 - If `multi_user_api` is `true`:
 
   ```
-  curl http://your-machine-ip/api/list -H "Authorization: Bearer <api_key> -H "userID: <user_id>""
+  curl http://your-machine-ip/api/list -H "Authorization: Bearer <api_key>" -H "userID: <user_id>"
   ```
 
 - Returns:
@@ -180,7 +180,7 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 - If `multi_user_api` is `true`:
 
   ```
-  curl http://your-machine-ip/api/listSSL -H "Authorization: Bearer <api_key> -H "userID: <user_id>""
+  curl http://your-machine-ip/api/listSSL -H "Authorization: Bearer <api_key>" -H "userID: <user_id>"
   ```
 
 - Returns:

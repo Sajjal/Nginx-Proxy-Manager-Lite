@@ -238,7 +238,6 @@ if config['enable_rest_api']:
 
     @ app.route('/api/list', methods=['GET'])
     def api_list():
-        print(request.headers)
         if not request.headers.get('Authorization') or not request.headers.get('Authorization').split()[1] == config[
                 'api_key']:
             return {"Error": "Invalid API Key"}, 401
