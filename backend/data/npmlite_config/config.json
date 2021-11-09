@@ -4,5 +4,6 @@
     "JWT_COOKIE_SECURE": false,
 
     "enable_rest_api": false,
-    "api_key": "npmlitebysajjal"
+    "api_key": "npmlitebysajjal",
+    "multi_user_api": false
 }

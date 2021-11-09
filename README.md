@@ -64,6 +64,7 @@ It is the lite version of original **Nginx Proxy Manager** and only contains bas
   | `JWT_COOKIE_SECURE`  | `bool`   | Enable or disable **HTTPS only JWT cookies**. Default is `false`               |
   | `enable_rest_api`    | `bool`   | Enable or disable **REST API**. Default is `false`                             |
   | `api_key`            | `string` | API Key for REST API endpoints. **Required** if REST API is enabled            |
+  | `multi_user_api`     | `bool`   | Enable or disable multi user API. Default is `false`                           |
 
 > **Info**: It is recommended to change `jwt_secret_key` and **restart** the container after making configuration changes.
 
@@ -93,8 +94,16 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 - List all availabel Hosts
 - **Endpoint:** `GET /api/list`
 
+- If `multi_user_api` is `false`:
+
   ```
   curl http://your-machine-ip/api/list -H "Authorization: Bearer <api_key>"
+  ```
+
+- If `multi_user_api` is `true`:
+
+  ```
+  curl http://your-machine-ip/api/list -H "Authorization: Bearer <api_key> -H "userID: <user_id>""
   ```
 
 - Returns:
@@ -132,11 +141,12 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 
 - **Endpoint:** `POST /api/requestSSL`
 
-  | Parameter      | Type     | Description                                                        |
-  | :------------- | :------- | :----------------------------------------------------------------- |
-  | `domain`       | `string` | **Required**. Domain you want to request SSL certificate for       |
-  | `email`        | `string` | **Required**. Email address to setup an account with Let's Encrypt |
-  | `agree_le_tos` | `bool`   | **Required**. Accept or deny Let's Encrypt's terms of services     |
+  | Parameter      | Type     | Description                                                              |
+  | :------------- | :------- | :----------------------------------------------------------------------- |
+  | `domain`       | `string` | **Required**. Domain you want to request SSL certificate for             |
+  | `email`        | `string` | **Required**. Email address to setup an account with Let's Encrypt       |
+  | `agree_le_tos` | `bool`   | **Required**. Accept or deny Let's Encrypt's terms of services           |
+  | `userID`       | `string` | User ID to associate SSL with **Required** if `multi_user_api` is `true` |
 
   ```
   curl -X POST http://your-machine-ip/api/requestSSL
@@ -161,8 +171,16 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 - List all available SSL certificates
 - **Endpoint:** `GET /api/listSSL`
 
+- If `multi_user_api` is `false`:
+
   ```
   curl http://your-machine-ip/api/listSSL -H "Authorization: Bearer <api_key>"
+  ```
+
+- If `multi_user_api` is `true`:
+
+  ```
+  curl http://your-machine-ip/api/listSSL -H "Authorization: Bearer <api_key> -H "userID: <user_id>""
   ```
 
 - Returns:
@@ -201,6 +219,7 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
   |                 |                         | **EXample**: `[ { "ip": "localhost", "port": "40045" }, { "ip": "192.168.1.2"} ]` |
   | `block_exploit` | `bool`                  | Enable to block common exploits                                                   |
   | `websocket`     | `bool`                  | Enable to support websocket, useful for socket.io based applications              |
+  | `userID`        | `string`                | User ID to associate Host with **Required** if `multi_user_api` is `true`         |
 
 - If you have obtained a SSL certificate and want to enable it, include the following params:
 
@@ -249,9 +268,10 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 - Temporarily disable a HOST while preserving all of its configuration
 - **Endpoint:** `POST /api/disable`
 
-  | Parameter | Type     | Description                                       |
-  | :-------- | :------- | :------------------------------------------------ |
-  | `domain`  | `string` | **Required**. The domain that you want to disable |
+  | Parameter | Type     | Description                                                             |
+  | :-------- | :------- | :---------------------------------------------------------------------- |
+  | `domain`  | `string` | **Required**. The domain that you want to disable                       |
+  | `userID`  | `string` | User ID associated with Host **Required** if `multi_user_api` is `true` |
 
   ```
   curl -X POST http://your-machine-ip/api/disable
@@ -271,9 +291,10 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 - To enable previously disabled a HOST
 - **Endpoint:** `POST /api/enable`
 
-  | Parameter | Type     | Description                                      |
-  | :-------- | :------- | :----------------------------------------------- |
-  | `domain`  | `string` | **Required**. The domain that you want to enable |
+  | Parameter | Type     | Description                                                             |
+  | :-------- | :------- | :---------------------------------------------------------------------- |
+  | `domain`  | `string` | **Required**. The domain that you want to enable                        |
+  | `userID`  | `string` | User ID associated with Host **Required** if `multi_user_api` is `true` |
 
   ```
   curl -X POST http://your-machine-ip/api/enable
@@ -292,9 +313,10 @@ If you have enabled `REST API`, you can consume it and programmatically manage n
 
 - **Endpoint:** `POST /api/delete`
 
-  | Parameter | Type     | Description                                      |
-  | :-------- | :------- | :----------------------------------------------- |
-  | `domain`  | `string` | **Required**. The domain that you want to delete |
+  | Parameter | Type     | Description                                                             |
+  | :-------- | :------- | :---------------------------------------------------------------------- |
+  | `domain`  | `string` | **Required**. The domain that you want to delete                        |
+  | `userID`  | `string` | User ID associated with Host **Required** if `multi_user_api` is `true` |
 
   ```
   curl -X POST http://your-machine-ip/api/delete

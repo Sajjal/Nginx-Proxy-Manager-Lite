@@ -216,8 +216,11 @@ if config['enable_rest_api']:
                 'api_key']:
             return {"Error": "Invalid API Key"}, 401
 
-        user = db.search_data('users')
-        request.json['userID'] = user[0]['id']
+        if not config['multi_user_api']:
+            user = db.search_data('users')
+            request.json['userID'] = user[0]['id']
+        elif not request.json['userID']:
+            return {"Error": "Invalid userID"}, 403
         return controller.create(request.json)
 
     @ app.route('/api/requestSSL', methods=['POST'])
@@ -226,18 +229,29 @@ if config['enable_rest_api']:
                 'api_key']:
             return {"Error": "Invalid API Key"}, 401
 
-        user = db.search_data('users')
-        request.json['userID'] = user[0]['id']
+        if not config['multi_user_api']:
+            user = db.search_data('users')
+            request.json['userID'] = user[0]['id']
+        elif not request.json['userID']:
+            return {"Error": "Invalid userID"}, 403
         return controller.request_new_ssl(request.json)
 
     @ app.route('/api/list', methods=['GET'])
     def api_list():
+        print(request.headers)
         if not request.headers.get('Authorization') or not request.headers.get('Authorization').split()[1] == config[
                 'api_key']:
             return {"Error": "Invalid API Key"}, 401
 
-        user = db.search_data('users')
-        domain_list = db.search_data('domain_info', {"userID": user[0]['id']})
+        if config['multi_user_api']:
+            if not request.headers.get('Userid'):
+                return {"Error": "Invalid userID"}, 403
+            userID = request.headers.get('Userid')
+        else:
+            user = db.search_data('users')
+            userID = user[0]['id']
+
+        domain_list = db.search_data('domain_info', {"userID": userID})
         for item in domain_list:
             if 'ips' in item:
                 item['ips'] = json.loads(item['ips'])
@@ -249,8 +263,15 @@ if config['enable_rest_api']:
                 'api_key']:
             return {"Error": "Invalid API Key"}, 401
 
-        user = db.search_data('users')
-        ssl_list = db.search_data('ssl_info', {"userID": user[0]['id']})
+        if config['multi_user_api']:
+            if not request.headers.get('Userid'):
+                return {"Error": "Invalid userID"}, 403
+            userID = request.headers.get('Userid')
+        else:
+            user = db.search_data('users')
+            userID = user[0]['id']
+
+        ssl_list = db.search_data('ssl_info', {"userID": userID})
         for ssl in ssl_list:
             cert_info = controller.read_ssl(ssl['ssl_cert_path'])
             ssl['cert_info'] = cert_info
@@ -262,8 +283,11 @@ if config['enable_rest_api']:
                 'api_key']:
             return {"Error": "Invalid API Key"}, 401
 
-        user = db.search_data('users')
-        request.json['userID'] = user[0]['id']
+        if not config['multi_user_api']:
+            user = db.search_data('users')
+            request.json['userID'] = user[0]['id']
+        elif not request.json['userID']:
+            return {"Error": "Invalid userID"}, 403
         return controller.update(request.json)
 
     @ app.route('/api/enable', methods=['POST'])
@@ -272,8 +296,11 @@ if config['enable_rest_api']:
                 'api_key']:
             return {"Error": "Invalid API Key"}, 401
 
-        user = db.search_data('users')
-        request.json['userID'] = user[0]['id']
+        if not config['multi_user_api']:
+            user = db.search_data('users')
+            request.json['userID'] = user[0]['id']
+        elif not request.json['userID']:
+            return {"Error": "Invalid userID"}, 403
         return controller.enable(request.json)
 
     @ app.route('/api/disable', methods=['POST'])
@@ -282,8 +309,11 @@ if config['enable_rest_api']:
                 'api_key']:
             return {"Error": "Invalid API Key"}, 401
 
-        user = db.search_data('users')
-        request.json['userID'] = user[0]['id']
+        if not config['multi_user_api']:
+            user = db.search_data('users')
+            request.json['userID'] = user[0]['id']
+        elif not request.json['userID']:
+            return {"Error": "Invalid userID"}, 403
         return controller.disable(request.json)
 
     @ app.route('/api/delete', methods=['POST'])
@@ -292,8 +322,11 @@ if config['enable_rest_api']:
                 'api_key']:
             return {"Error": "Invalid API Key"}, 401
 
-        user = db.search_data('users')
-        request.json['userID'] = user[0]['id']
+        if not config['multi_user_api']:
+            user = db.search_data('users')
+            request.json['userID'] = user[0]['id']
+        elif not request.json['userID']:
+            return {"Error": "Invalid userID"}, 403
         return controller.delete(request.json)
 
 if __name__ == '__main__':
