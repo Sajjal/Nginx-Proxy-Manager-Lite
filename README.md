@@ -47,7 +47,13 @@ It is the lite version of original **Nginx Proxy Manager** and only contains bas
    docker run -p 80:80 -p 443:443 --network npmlite_sd -v ~/npmlite/data:/data -v ~/npmlite/ssl:/etc/letsencrypt --name npmlite -d  mrsajjal/npmlite
    ```
 
-3. Go to `http://localhost` or `http://your-machine-ip` **Enjoy.**
+3. Go to `http://localhost` or `http://your-machine-ip`
+
+4. The default login info for web interface is:
+
+   | Email           | Password |
+   | :-------------- | :------- |
+   | npm@npmlite.com | npmlite  |
 
 ---
 
