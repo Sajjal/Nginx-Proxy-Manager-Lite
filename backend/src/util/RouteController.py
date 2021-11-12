@@ -28,7 +28,8 @@ class RouteController:
     @staticmethod
     def __validate_user_input(user_input):
         allowed_characters = re.compile(r"[A-Za-z0-9-_.@/]+|^$")
-        domain_regex = re.compile(r"^(\*\.)?([a-z\d][a-z\d-]*[a-z\d]\.)+[a-z]+$")
+        #domain_regex = re.compile(r"^(\*\.)?([a-z\d][a-z\d-]*[a-z\d]\.)+[a-z]+$")
+        domain_regex = re.compile(r"[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|]")
 
         if not isinstance(user_input, dict):
             return
@@ -72,7 +73,6 @@ class RouteController:
             return
 
     def request_new_ssl(self, params):
-        # example_params: {"domain":"abc.com", "email":"a@b.com", "userID": "123abc", "agree_le_tos":1}
         if not self.__validate_user_input(params):
             return {"Error": "Invalid params"}, 406
 

@@ -109,7 +109,7 @@ export default {
     const ssl_info = ref(null);
 
     const email_format = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const domain_format = /^(\*\.)?([a-z\d][a-z\d-]*[a-z\d]\.)+[a-z]+$/;
+    const domain_format = /[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|]/;
 
     function updateFields() {
       if (store.state.edit_domain) {
